@@ -51,7 +51,7 @@ const getCandyMachineState = async () => {
   
     // Busque os metadados da sua Candy Machine com o comando fetch
     const candyMachine = await program.account.candyMachine.fetch(
-      process.env.NEXT_APP_CANDY_MACHINE_ID
+      process.env.NEXT_PUBLIC_CANDY_MACHINE_ID
     );
     
     // Analise todos os nossos metadados e crie um log
