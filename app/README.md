@@ -2,19 +2,20 @@ Este é um projeto [Next.js](https://nextjs.org/) inicializado com [`create-next
 
 ## Começando
 
-Primeiro, execute o servidor de desenvolvimento:
+Instale os pacotes e inicie o servidor local com `npm` ou o package mannager de sua preferência:
 
 **Cartifique-se de estar na pasta `app` e ter baixado as dependências.**
 
 ```bash
+npm i 
+#instala as depêndencias
 npm run dev
-# ou
-yarn dev
+# Executa o servidor local
 ```
 
 Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
 
-Você pode começar a editar a página modificando `/app/pages/index.js`. A página é atualizada automaticamente conforme você edita o arquivo.
+Você pode começar a editar a página modificando `app/pages/index.js`. A página é atualizada automaticamente conforme você edita o arquivo.
 
 [Rotas de API](https://nextjs.org/docs/api-routes/introduction) podem ser acessadas em [http://localhost:3000/api/hello](http://localhost:3000/api/hello). Este ponto de extremidade pode ser editado em `pages/api/hello.js`.
 
