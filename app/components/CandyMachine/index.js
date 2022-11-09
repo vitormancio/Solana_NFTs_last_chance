@@ -318,18 +318,16 @@ const CandyMachine = ({ walletAddress }) => {
     };
 
     return (
-        candyMachine && (
+        candyMachine && candyMachine.state && (
             <div className="machine-container">
-              <p>
-                {`Data do Drop: ${candyMachine.state.goLiveDateTimeString}`}
-              </p>
+              <p>{`Data do Drop: ${candyMachine.state.goLiveDateTimeString}`}</p>
               <p>{`Itens Cunhados: ${candyMachine.state.itemsRedeemed} / ${candyMachine.state.itemsAvailable}`}</p>
-              <button className="cta-button mint-button" onClick={null}>
+              <button className="cta-button mint-button" onClick={mintToken}>
                   Cunhar NFT
               </button>
             </div>
           )
-    );
+        );
 };
 
 export default CandyMachine;
