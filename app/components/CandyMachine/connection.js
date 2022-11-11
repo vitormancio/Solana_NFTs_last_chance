@@ -336,7 +336,7 @@ export async function sendSignedTransaction({ signedTransaction, connection, tim
         done = true;
     }
 
-    console.log("Latência", txid, getUnixTs() - startTime);
+    console.log("Latência", txid, getUnixTs() - startTime,);
     return { txid, slot };
 }
 

@@ -3,6 +3,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import { Program, AnchorProvider, web3 } from "@project-serum/anchor";
 import { MintLayout, TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
 import { sendTransactions } from "./connection";
+import CountdownTimer from '../CountdownTimer';
 import {
     candyMachineProgram,
     TOKEN_METADATA_PROGRAM_ID,
@@ -29,8 +30,7 @@ const CandyMachine = ({ walletAddress }) => {
       const getProvider = () => {
         const rpcHost = process.env.NEXT_PUBLIC_SOLANA_RPC_HOST;
         // Crie um novo objeto de conexão
-        const connection = new Connection(rpcHost);
-        
+        const connection = new Connection(rpcHost);        
         // Crie um novo objeto de provedor Solana
         const provider = new AnchorProvider(
           connection,
@@ -154,6 +154,7 @@ const CandyMachine = ({ walletAddress }) => {
     };
 
     const mintToken = async () => {
+        console.log(candyMachine)
         const mint = web3.Keypair.generate();
 
         const userTokenAccountAddress = (await getAtaForMint(mint.publicKey, walletAddress.publicKey))[0];
@@ -241,6 +242,7 @@ const CandyMachine = ({ walletAddress }) => {
                     );
                     cleanupInstructions.push(Token.createRevokeInstruction(TOKEN_PROGRAM_ID, whitelistToken, walletAddress.publicKey, []));
                 }
+                
             }
         }
 
@@ -301,6 +303,7 @@ const CandyMachine = ({ walletAddress }) => {
                 remainingAccounts: remainingAccounts.length > 0 ? remainingAccounts : undefined,
             })
         );
+        
 
         try {
             return (
@@ -317,17 +320,48 @@ const CandyMachine = ({ walletAddress }) => {
         return [];
     };
 
-    return (
-        candyMachine && candyMachine.state && (
-            <div className="machine-container">
-              <p>{`Data do Drop: ${candyMachine.state.goLiveDateTimeString}`}</p>
-              <p>{`Itens Cunhados: ${candyMachine.state.itemsRedeemed} / ${candyMachine.state.itemsAvailable}`}</p>
-              <button className="cta-button mint-button" onClick={mintToken}>
-                  Cunhar NFT
-              </button>
-            </div>
-          )
-        );
+    // Crie a função de renderização
+const renderDropTimer = () => {
+    // Obtenha a data atual e dropDate em um objeto JavaScript Date
+    const currentDate = new Date();
+    const dropDate = new Date(candyMachine.state.goLiveData * 1000);
+  
+    // Se currentDate for anterior à dropDate, renderize nosso componente Countdown
+    if (currentDate < dropDate) {
+      console.log('Anterior à data do drop!!');
+      // Não se esqueça de retornar o seu dropDate!
+      return <CountdownTimer dropDate={dropDate} />;
+    }
+  
+    // Caso contrário, vamos apenas retornar a data do drop atual
+    return <p>{`Data do Drop: ${candyMachine.state.goLiveDateTimeString}`}</p>;
+  };
+
+    
+    
+  return (
+    candyMachine && candyMachine.state && (
+      <div className="machine-container">
+        {renderDropTimer()}
+        <p>{`Itens Cunhados: ${candyMachine.state.itemsRedeemed} / ${candyMachine.state.itemsAvailable}`}</p>
+          {/* Verifique se essas propriedades são iguais! */}
+          {candyMachine.state.itemsRedeemed === candyMachine.state.itemsAvailable ? (
+            <p className="sub-text">Esgotado!🙊</p>
+          ) : (
+            <button
+              className="cta-button mint-button"
+              onClick={mintToken}
+            >
+              Cunhar NFT
+            </button>
+          )}
+      </div>
+    )
+  );
+
+        
 };
+
+
 
 export default CandyMachine;
